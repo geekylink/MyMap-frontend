@@ -1,0 +1,7 @@
+.LocationSearch {
+    float: left;
+}
+
+.LocationSearch input {
+    max-width: 25vw;
+}

@@ -1,0 +1,8 @@
+.MapMenuBar {
+    position: absolute;
+    max-width: 50%;
+    max-height: 25%;
+    border-style: ridge;
+    background-color: white;
+    z-index: 3;
+}

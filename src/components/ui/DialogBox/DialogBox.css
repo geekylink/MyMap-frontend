@@ -1,0 +1,15 @@
+.DialogBox {
+    position: absolute;
+    border-style: double;
+    z-index: 4;
+    background-color: white;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.DialogBox textarea {
+    width: 98%;
+    min-width: 98%;
+}

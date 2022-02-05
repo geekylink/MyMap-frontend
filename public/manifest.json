@@ -1,0 +1,10 @@
+{
+  "manifest_version": 2,
+  "name": "Super Map App",
+  "version": "1",
+  "description": "Best app east of the setting sun",
+  "icons": ["favicon-16x16.png",
+            "favicon-32x32.png",
+            "logo192.png",
+            "android-chrome-512x512.png"]
+}

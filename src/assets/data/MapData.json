@@ -1,0 +1,354 @@
+[
+    {
+        "id": 1, 
+        "title": "New York City, NY, USA",
+        "gps": {
+            "lat": 40.712778, 
+            "long": -74.006111 
+        }
+    },
+    {
+        "id": 2, 
+        "title": "Chicago, IL, USA",
+        "gps": {
+            "lat": 41.881944,
+            "long":  -87.627778 
+        }
+    },
+    {
+        "id": 3, 
+        "title": "St. Louis, MO, USA",
+        "gps": {
+            "lat": 38.627222, 
+            "long": -90.197778 
+        }
+    },
+    {
+        "id": 4, 
+        "title": "Las Vegas, NV, USA",
+        "gps": {
+            "lat": 36.175, 
+            "long": -115.136389
+        }
+    },
+    {
+        "id": 5, 
+        "title": "Flagstaff, AZ, USA",
+        "gps": {
+            "lat": 35.199167,
+            "long": -111.631111
+        }
+    },
+    {
+        "id": 6, 
+        "title": "Detroit, MI, USA",
+        "gps": {
+            "lat": 42.331389, 
+            "long": -83.045833
+        }
+    },
+    {
+        "id": 7, 
+        "title": "Grand Rapids, MI, USA",
+        "gps": {
+            "lat": 42.961111, 
+            "long": -85.655556
+        }
+    },
+    {
+        "id": 8, 
+        "title": "Ann Arbor, MI, USA",
+        "gps": {
+            "lat": 42.281389, 
+            "long": -83.748333 
+        }
+    },
+    {
+        "id": 9, 
+        "title": "Seattle",
+        "gps": {
+            "lat": 47.609722, 
+            "long": -122.333056
+        }
+    },
+    {
+        "id": 10, 
+        "title": "Niagara Falls, ON, CA",
+        "gps": {
+            "lat": 43.06, 
+            "long": -79.106667
+        }
+    },
+    {
+        "id": 11, 
+        "title": "Berlin, DE",
+        "gps": {
+            "lat": 52.52, 
+            "long": 13.405
+        }
+    },
+    {
+        "id": 12, 
+        "title": "Rome, IT",
+        "gps": {
+            "lat": 41.883333,
+            "long": 12.5
+        }
+    },
+    {
+        "id": 13, 
+        "title": "Paris, FR",
+        "gps": {
+            "lat": 48.856613, 
+            "long": 2.352222
+        }
+    },
+    {
+        "id": 14, 
+        "title": "Berlin, DE",
+        "gps": {
+            "lat": 52.52, 
+            "long": 13.405
+        }
+    },
+    {
+        "id": 15, 
+            "title": "Amsterdam, NL",
+        "gps": {
+            "lat": 52.366667, 
+            "long": 4.9
+        }
+    },
+    {
+        "id": 16, 
+        "title": "Tokyo, JP",
+        "gps": {
+            "lat": 35.689722, 
+            "long": 139.692222
+        }
+    },
+    {
+        "id": 17, 
+        "title": "Osaka, JP",
+        "gps": {
+            "lat": 34.693889, 
+            "long": 135.502222
+        }
+    },
+    {
+        "id": 18, 
+        "title": "Kota Kinabalu, MY",
+        "gps": {
+            "lat": 5.975,
+            "long": 116.0725
+        }
+    },
+    {
+        "id": 20, 
+        "title": "Kuala Lumpur, MY",
+        "gps": {
+            "lat": 3.147778, 
+            "long": 101.695278
+        }
+    },
+    {
+        "id": 21, 
+        "title": "Semporna, MY",
+        "gps": {
+            "lat": 4.483333,
+            "long": 118.616667
+        }
+    },
+    {
+        "id": 22, 
+        "title": "Penang, MY",
+        "gps": {
+            "lat": 5.4025,
+            "long": 100.365
+        }
+    },
+    {
+        "id": 23, 
+        "title": "Portland, OR, USA",
+        "gps": {
+            "lat": 45.52,
+            "long": -122.681944
+        }
+    },
+    {
+        "id": 24, 
+        "title": "Phuket, TH",
+        "gps": {
+            "lat": 7.888056, 
+            "long": 98.3975
+        }
+    },
+    {
+        "id": 25, 
+        "title": "Bangkok, TH",
+        "gps": {
+            "lat": 13.7525,
+            "long": 100.494167
+        }
+    },
+    {
+        "id": 26, 
+        "title": "Phnom Penh, KH",
+        "gps": {
+            "lat": 11.569444, 
+            "long":104.921111
+        }
+    },
+    {
+        "id": 27, 
+        "title": "Siem Reap",
+        "gps": {
+            "lat": 13.362222, 
+            "long": 103.859722
+        }
+    },
+    {
+        "id": 28, 
+        "title": "Orlando, FL, USA",
+        "gps": {
+            "lat": 28.54,
+            "long": -81.38
+        }
+    },
+    {
+        "id": 29, 
+        "title": "Nanjing, CN",
+        "gps": {
+            "lat": 32.0614,
+            "long": 118.7636
+        }
+    },
+    {
+        "id": 30, 
+        "title": "Shanghai, CN",
+        "gps": {
+            "lat": 31.228611, 
+            "long": 121.474722
+        }
+    },
+    {
+        "id": 31, 
+        "title": "Ningbo, CN",
+        "gps": {
+            "lat": 29.869, 
+            "long": 121.554
+        }
+    },
+    {
+        "id": 32, 
+        "title": "Changsha, CN",
+        "gps": {
+            "lat": 28.228, 
+            "long": 112.939
+        }
+    },
+    {
+        "id": 33, 
+        "title": "Beijing, CN",
+        "gps": {
+            "lat": 39.906667, 
+            "long": 116.3975
+        }
+    },
+    {
+        "id": 34, 
+        "title": "Hong Kong, CN",
+        "gps": {
+            "lat": 22.302711, 
+            "long": 114.177216
+        }
+    },
+    {
+        "id": 35, 
+        "title": "Macau, CN",
+        "gps": {
+            "lat": 22.210928, 
+            "long": 113.552971
+        }
+    },
+    {
+        "id": 36, 
+        "title": "Sanya, CN",
+        "gps": {
+            "lat": 18.2529, 
+            "long": 109.5117
+        }
+    },
+    {
+        "id": 37, 
+        "title": "Guangzhou, CN",
+        "gps": {
+            "lat": 23.132, 
+            "long": 113.266
+        }
+    },
+    {
+        "id": 38, 
+        "title": "Chongqing, CN",
+        "gps": {
+            "lat": 29.5637, 
+            "long": 106.5504
+        }
+    },
+    {
+        "id": 39, 
+        "title": "Chengdu, CN",
+        "gps": {
+            "lat": 30.66, 
+            "long": 104.063333
+        }
+    },
+    {
+        "id": 40, 
+        "title": "Fuquan, CN",
+        "gps": {
+            "lat": 26.6863, 
+            "long": 107.5204
+        }
+    },
+    {
+        "id": 41, 
+        "title": "Xi'an, CN",
+        "gps": {
+            "lat": 34.265, 
+            "long": 108.954
+        }
+    },
+    {
+        "id": 42, 
+        "title": "Hangzhou, CN",
+        "gps": {
+            "lat": 30.267, 
+            "long": 120.153
+        }
+    },
+    {
+        "id": 43, 
+        "title": "Yuyao, CN",
+        "gps": {
+            "lat": 30.05,
+            "long": 121.15
+        }
+    },
+    {
+        "id": 44, 
+        "title": "Suzhou, CN",
+        "gps": {
+            "lat": 31.2998, 
+            "long": 120.5853
+        }
+    },
+    {
+        "id": 45, 
+        "title": "Berlin, DE",
+        "gps": {
+            "lat": 52.52, 
+            "long": 13.405
+        }
+    }
+]
