@@ -1,0 +1,13 @@
+.DialogFullScreen {
+    position: absolute;
+    border-style: none;
+    z-index: 5;
+    background-color: white;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: block;
+}
+

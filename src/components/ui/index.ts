@@ -1,4 +1,5 @@
 export * from "./DialogBox";
+export * from "./DialogFullScreen";
 export * from "./LocationSearch";
 export * from "./MapIcon";
 export * from "./MapMarker";

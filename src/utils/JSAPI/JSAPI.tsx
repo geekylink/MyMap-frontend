@@ -1,5 +1,8 @@
 import {LocationData} from "../../types/";
 
+//const HTTP_SERVER = "http://localhost:8080";
+const HTTP_SERVER = "";
+
 const JSONAPICall = (url: string, body: string) => {
     // POSTs JSON and returns a promise that fetches the JSON response
 
@@ -10,7 +13,7 @@ const JSONAPICall = (url: string, body: string) => {
     }
 
     return new Promise((resolve, reject) => {
-        fetch(url, reqOptions).then(response => {
+        fetch(HTTP_SERVER + url, reqOptions).then(response => {
 
             // Bad response, don't try to parse
             if (!response.ok) {
@@ -19,7 +22,7 @@ const JSONAPICall = (url: string, body: string) => {
             }
 
             response.json().then(json => {
-                if (json.status == "OK") resolve(json);
+                if (json.status === "OK") resolve(json);
                 reject(json);
             })
         });
@@ -27,12 +30,13 @@ const JSONAPICall = (url: string, body: string) => {
 }
 
 const GETAPICall = (url: string) => {
+    // Makes a GET request and returns JSON data
     const reqOptions = {
         method: 'GET',
     }
 
     return new Promise((resolve, reject) => {
-        fetch(url, reqOptions).then(response => {
+        fetch(HTTP_SERVER + url, reqOptions).then(response => {
             // Bad response
             if (!response.ok) {
                 reject(response);
@@ -48,7 +52,6 @@ const GETAPICall = (url: string) => {
 
 const Login = (username: string, password: string) => {
     // JSON Login
-
     return JSONAPICall("/user/login/", 
                         JSON.stringify({ 
                             username: username,
@@ -64,9 +67,16 @@ const CheckLogin = () => {
     return GETAPICall("/user/");
 }
 
+const GetFileInfo = (filename: string) => {
+    // Fetches info for a file
+    return JSONAPICall("/api/getFileInfo/", 
+                        JSON.stringify({ 
+                            filename: filename,
+                        }));
+}
+
 const GetLocationFiles = (locationId: number) => {
     // Fetch filenames (photos) for a location
-
     return JSONAPICall("/api/getLocationFiles/", 
                         JSON.stringify({ 
                             id: locationId,
@@ -74,6 +84,7 @@ const GetLocationFiles = (locationId: number) => {
 }
 
 const SaveLocation = (location: LocationData) => {
+    // Saves location data to the database
     return JSONAPICall("/api/saveLocation/", 
                         JSON.stringify({ 
                             label: location.label,
@@ -86,8 +97,11 @@ const SaveLocation = (location: LocationData) => {
 export const UseJSAPI = () => {
     // Returns API Calls available
     return {
+        "GetFileInfo":      GetFileInfo,
         "GetLocationFiles": GetLocationFiles,
         "SaveLocation":     SaveLocation,
+
+        // User functions
         "Login":            Login,
         "Logout":           Logout,
         "CheckLogin":       CheckLogin,

@@ -5,3 +5,14 @@
 .leaflet-popup-content {
     width: 300%;
 }
+
+.MapMarkerFile {
+    display: inline-block;
+    width: 25%;
+}
+
+
+.MapMarkerLastFile {
+    display: inline-block;
+    width: 25%;
+}

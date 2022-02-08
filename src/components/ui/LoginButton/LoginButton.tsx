@@ -26,18 +26,17 @@ export const LoginButton = ({
     if (!checked) {
         jsapi.CheckLogin().then(
             result => {
-                setUsername("" + result);
-                setChecked(true);
+                // Filter out long response (ie. from dev server)
+                if (("" + result).length < 128) {
+                    setUsername("" + result);
+                    setChecked(true);
+                }
             },
-            error => {} // Auth disabled?
+            error => { console.log(error); } // Auth disabled?
         );
         return null;
     }
 
-    console.log("lol");
-    console.log(sessionStorage.getItem("actix-session"));
-    console.log(sessionStorage.getItem("user"));
-    console.log(sessionStorage.getItem("/"));
     const handleClick = () => {
         if (text == "Login") {
             setPopup(true);

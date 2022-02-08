@@ -4,7 +4,7 @@ import {Icon} from 'leaflet';
 
 import {MapIcon} from "../";
 import {MapPopupOnOpen} from "../../helpers/";
-import {LocationData} from "../../../types";
+import {LocationData, FileInfo} from "../../../types";
 import {UseJSAPI} from "../../../utils/";
 
 import "./MapMarker.css"
@@ -43,6 +43,8 @@ type LocationMarkerProps = {
     OnRemove?: (location: LocationData) => void;
     OnCenter?: ((location: LocationData) => void) | boolean;
     OnCustom?: { [key: string]: () => void}; 
+    OnFileSelect?: (file: FileInfo) => void;
+    OnLoad?: () => void;
 };
 
 export const MapMarker= ({
@@ -53,14 +55,19 @@ export const MapMarker= ({
         OnAddFile,
         OnRemove,
         OnCenter = true,
-        OnCustom 
+        OnCustom,
+        OnFileSelect,
+        OnLoad
     }: LocationMarkerProps) => {
 
-    const [files, setFiles] = useState<string[]>([]);
+    const [files, setFiles] = useState<FileInfo[]>([]);
+    const [fileSelected, setFileSelected] = useState<FileInfo | null>(null);
+    const [checked, setChecked] = useState(false);
+    const [filesFetched, setFilesFetched] = useState(0);
+
 
     const jsapi = UseJSAPI();
     const map = useMap();
-
 
     var actions: {[key: string]: () => void} = {}; 
 
@@ -80,7 +87,7 @@ export const MapMarker= ({
                                     map.eachLayer((layer) => {
                                         if (layer.isPopupOpen()) popup = layer.getPopup();
                                     });
-
+                                    
                                     map.closePopup();
                                     map.flyTo([location.mapLat, location.mapLon], map.getZoom()); 
                                     //map.on("moveend", () => { if (popup && map) map.openPopup(popup); }); // infinite recursion
@@ -97,15 +104,43 @@ export const MapMarker= ({
     }
 
     const handleLoad = () => {
-        if (files.length == 0 && location.id && location.id != -1) {
+        if (!checked && location.id && location.id != -1) {
             jsapi.GetLocationFiles(location.id).then(function(json: any) {
-                console.log(location);
-                console.log(json.filenames);
-                setFiles(json.filenames);
+                json.filenames.forEach((filename: string) => {
+                    console.log("Checking: " + filename);
+                    
+                    jsapi.GetFileInfo(filename).then(
+                        (fileInfo: any) => {
+                            console.log("Found file");
+                            console.log(fileInfo);
+                            let newFiles = files;
+
+                            newFiles.push({
+                                filename: filename,
+                                title: fileInfo.title,
+                                description: fileInfo.description,
+                            });
+                            
+                            setFiles([...newFiles]);
+                            //if (OnLoad) OnLoad(); // TODO, should call after all loaded
+                        },
+                        error => {console.log(error);},
+                    );
+
+                    setChecked(true);
+                });
             });
         }
     }
+
+    const handleClickPhoto = () => {
+            alert("aklert");
+    }
     
+    const handleFileSelect = (file: FileInfo) => {
+        setFileSelected(file);
+    }
+
     return (
         <Marker position={[location.mapLat, location.mapLon]} icon={icon} >
             <Popup maxWidth={700} >
@@ -114,19 +149,35 @@ export const MapMarker= ({
 
                 <MapMarkerActions actions={actions}/> 
 
-                {(files) ? files.map((filename,key) => {
-                    let style = { };
-                    // Last image can't have this style or it will mess up the popup
-                    if (key < files.length-1) {
-                        style = {"float":"left"}
-                    }
-                    return (
-                        <div style={style}>
-                            <div>lol {key} {files.length}</div>
-                            <img width="25%" src={`img/tmp/${filename}`} />
-                        </div>
-                    );
+                <div>
+                {(fileSelected === null && files) ? files.map((file,key) => {
+                    let className = "MapMarkerFile";
+                    if (key == files.length-1) className = "MapMarkerLastFile";
+                    return (<div className={className} onClick={() => {handleFileSelect(file); } }>
+                        <div>{file.title}</div>
+                        <img width="100%" src={`/img/tmp/${file.filename}`}  />
+                    </div>);
                 }) : null}
+                {(fileSelected !== null) ? 
+                        <>
+                            <div>
+                                {fileSelected.title}
+                                <div style={ {textAlign:"right"} }>
+                                    <button onClick={() => {setFileSelected(null);}}>X</button>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div style={ {textAlign:"center"} }>
+                                <a href={`/img/tmp/${fileSelected.filename}`} target="_blank">
+                                    <img width="100%" src={`/img/tmp/${fileSelected.filename}`}  />
+                                </a>
+                            
+                                <div>{fileSelected.description}</div>
+                            </div>
+                        </>
+                    : null
+                }
+                </div>
 
                 {children}
             </Popup>

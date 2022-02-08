@@ -1,10 +1,10 @@
 import {useState, ReactNode} from 'react';
 import { MapContainer, TileLayer, ZoomControl} from 'react-leaflet';
 
-import {LocationSearch, MapMarkers, MapMarker, MapIcon, MapMenuBar, DialogBox, FileUpload} from "../ui/";
+import {LocationSearch, MapMarkers, MapMarker, MapIcon, MapMenuBar, DialogBox, DialogFullScreen, FileUpload} from "../ui/";
 import {MapEvents, UseJSAPI} from "./../../utils/";
 
-import {LocationData, MapProps} from "../../types";
+import {LocationData, MapProps, FileInfo} from "../../types";
 
 type MapManagerProps = {
     children?: ReactNode;
@@ -24,6 +24,7 @@ export const MapManager = ({
     const [topLeft, setTopLeft] = useState<[number, number]>();
     const [bottomRight, setBottomRight] = useState<[number, number]>();
 
+    // Popups
     const [exportData, setExportData] = useState("");
     const [showImport, setShowImport] = useState(false);
     const [fileLocationId, setFileLocationId] = useState(-1);
@@ -81,6 +82,11 @@ export const MapManager = ({
     const handleAddFile = (location: LocationData) => {
         if (location.id && location.id != -1) setFileLocationId(location.id);
     }
+
+    /*const handleFileSelect = (file: FileInfo) => {
+        console.log(file);
+        setFileSelected(file);
+    }*/
 
     return (
         <>
