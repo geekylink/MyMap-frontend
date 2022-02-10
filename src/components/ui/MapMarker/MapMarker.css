@@ -11,8 +11,23 @@
     width: 25%;
 }
 
-
 .MapMarkerLastFile {
     display: inline-block;
     width: 25%;
+}
+
+//.MapMarkerSingleFile {}
+//.MapMarkerSingleFileTitle {}
+
+.MapMarkerSingleFileButton {
+    textAlign:"right";
+}
+
+.MapMarkerSingleImageWrapper {
+    textAlign: "center";
+}
+
+.MapMarkerSingleImageWrapper img {
+    max-height: 70vh;
+    max-width: 70vw;
 }

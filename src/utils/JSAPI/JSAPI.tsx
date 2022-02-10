@@ -29,7 +29,7 @@ const JSONAPICall = (url: string, body: string) => {
     });
 }
 
-const GETAPICall = (url: string) => {
+const GETAPICall = (url: string, doParse: boolean) => {
     // Makes a GET request and returns JSON data
     const reqOptions = {
         method: 'GET',
@@ -44,7 +44,11 @@ const GETAPICall = (url: string) => {
             }
 
             response.text().then(resp => {
-                resolve(resp);
+                if (doParse) {
+                    resolve(JSON.parse(resp));
+                } else {
+                    resolve(resp);
+                }
             });
         });
     });
@@ -60,11 +64,11 @@ const Login = (username: string, password: string) => {
 }
 
 const Logout = () => {
-    return GETAPICall("/user/logout/");
+    return GETAPICall("/user/logout/", false);
 }
 
 const CheckLogin = () => {
-    return GETAPICall("/user/");
+    return GETAPICall("/user/", true);
 }
 
 const GetFileInfo = (filename: string) => {
@@ -73,6 +77,11 @@ const GetFileInfo = (filename: string) => {
                         JSON.stringify({ 
                             filename: filename,
                         }));
+}
+
+const GetAllLocations = () => {
+    // Fetch filenames (photos) for a location
+    return GETAPICall("/api/getAllLocations/", true);
 }
 
 const GetLocationFiles = (locationId: number) => {
@@ -90,13 +99,14 @@ const SaveLocation = (location: LocationData) => {
                             label: location.label,
                             lat: location.lat,
                             lon: location.lon,
-                            data: JSON.stringify(location),
+                            location_type: location.type,
                         }));
 }
 
 export const UseJSAPI = () => {
     // Returns API Calls available
     return {
+        "GetAllLocations":  GetAllLocations,
         "GetFileInfo":      GetFileInfo,
         "GetLocationFiles": GetLocationFiles,
         "SaveLocation":     SaveLocation,

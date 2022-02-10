@@ -13,23 +13,37 @@ type MapManagerProps = {
 export const MapManager = ({
     children
 }: MapManagerProps) => {
-    // Read in locations from localStorage, parse if possible, then add to default locations
-    const locationData = localStorage.getItem("locations");
-    const locationJSON = JSON.parse((locationData) ? locationData : "[]");
 
-//    const [centerLocation, setCenterLocation] = useState<LocationData>();
     const [searchLocations, setSearchLocations] = useState<LocationData[]>([]);
-    const [locations, setLocations] = useState<LocationData[]>(locationJSON ? locationJSON : []);
+    const [locations, setLocations] = useState<LocationData[]>([]);
+    const [checkedLocations, setCheckedLocations] = useState(false);
 
-    const [topLeft, setTopLeft] = useState<[number, number]>();
-    const [bottomRight, setBottomRight] = useState<[number, number]>();
-
-    // Popups
-    const [exportData, setExportData] = useState("");
-    const [showImport, setShowImport] = useState(false);
     const [fileLocationId, setFileLocationId] = useState(-1);
+    const [refreshNum, setRefreshNum] = useState(0);
 
     const jsapi = UseJSAPI();
+
+    // Init
+    if (!checkedLocations) {
+        setCheckedLocations(true);
+        jsapi.GetAllLocations().then((json: any) => {
+            //let json = JSON.parse(jsonStr);
+            let newLocations = locations;
+
+            json.locations.forEach((location: any) => {
+                newLocations.push({
+                    id: location.id,
+                    label: location.label,
+                    lat: Number(location.lat),
+                    lon: Number(location.lon),
+                    mapLat: Number(location.lat),
+                    mapLon: Number(location.lon),
+                    type: location.type,
+                });
+            });
+            setLocations([...newLocations]);
+        });
+    }
 
     // Center on the first location (if any), otherwise center around Europe
     //const [center, setCenter] = useState<[number,number]>((locations.length > 0) ? [locations[0].lat,locations[0].lon] : [20,20]); 
@@ -40,7 +54,6 @@ export const MapManager = ({
 
             const newLocations = locations.concat(newLocation);
 
-            localStorage.setItem("locations", JSON.stringify(newLocations));
             setLocations(newLocations);
         });
 
@@ -57,40 +70,14 @@ export const MapManager = ({
             return (location !== val);
         });
         setLocations(newLocations);
-        localStorage.setItem("locations", JSON.stringify(newLocations));
     };
-
-    const handleMapMove = (map: MapProps) => {
-        //console.log("OnMove:", map);
-        //setCenter(map.center.toAr());
-    };
-
-    const handleMapZoom = (map: MapProps) => {
-        //console.log("OnZoom:", map);
-        setTopLeft(map.topLeft.toAr());
-        setBottomRight(map.bottomRight.toAr());
-    };
-
-    const handleExportClick = () => {
-        setExportData(JSON.stringify(locations));
-    }
-
-    const handleImportClick = () => {
-        setShowImport(true);
-    }
 
     const handleAddFile = (location: LocationData) => {
         if (location.id && location.id != -1) setFileLocationId(location.id);
     }
-
-    /*const handleFileSelect = (file: FileInfo) => {
-        console.log(file);
-        setFileSelected(file);
-    }*/
-
     return (
         <>
-        <MapMenuBar OnSearchResult={handleSearchResult} OnExport={handleExportClick} OnImport={handleImportClick}/>
+        <MapMenuBar OnSearchResult={handleSearchResult}/>
         {(fileLocationId != -1) ? 
             <DialogBox title="File Upload" OnClose={() => { setFileLocationId(-1); }}>
                 <FileUpload url={`/upload/photo/${fileLocationId}/`} OnFinish={(success: boolean) => { 
@@ -113,8 +100,6 @@ export const MapManager = ({
         <MapContainer center={[20,20]} zoom={3} scrollWheelZoom={true} zoomControl={false}>
                 <ZoomControl position="topright" />
 
-                <MapEvents OnMove={handleMapMove} OnZoom={handleMapZoom} />
-
                 {searchLocations.map((location, key) => (
                     <MapMarker location={location} icon={MapIcon("green")} OnAdd={handleNewLocationSelection} key={key} />
                 ))}
@@ -130,16 +115,6 @@ export const MapManager = ({
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </MapContainer>
-
-        {(exportData) ? <DialogBox title="Map Location Data" message={exportData} showCopy={true} OnClose={() => { setExportData("") } }/> : null}
-        {(showImport) ? <DialogBox title="Import Map Location Data:" message={""} 
-                                    OnClose={() => { setShowImport(false); }} 
-                                    OnSubmit={(importData) => 
-                                                { 
-                                                    if (importData == "") importData = "[]";
-                                                    setLocations(JSON.parse(importData));
-                                                }} 
-                                        /> : null}
         </>
     );
 }

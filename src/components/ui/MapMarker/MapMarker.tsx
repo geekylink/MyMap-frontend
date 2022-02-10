@@ -5,7 +5,7 @@ import {Icon} from 'leaflet';
 import {MapIcon} from "../";
 import {MapPopupOnOpen} from "../../helpers/";
 import {LocationData, FileInfo} from "../../../types";
-import {UseJSAPI} from "../../../utils/";
+import {UseJSAPI, UserHasPermission} from "../../../utils/";
 
 import "./MapMarker.css"
 
@@ -72,11 +72,15 @@ export const MapMarker= ({
     var actions: {[key: string]: () => void} = {}; 
 
     if (OnAdd) {
-        actions["Add"] = () => { OnAdd(location) }
+        if (UserHasPermission("saveLocation")) {
+            actions["Add"] = () => { OnAdd(location) }
+        }
     }
 
     if (OnAddFile) {
-        actions["Add File"] = () => { OnAddFile(location) }
+        if (UserHasPermission("saveFile")) {
+            actions["Add File"] = () => { OnAddFile(location) }
+        }
     }
 
     // Center defaults to on unless explicitly disabled with 'false', can also be overriden with OnCenter()
@@ -96,7 +100,9 @@ export const MapMarker= ({
     }
 
     if (OnRemove) {
-        actions["remove"] = () => { OnRemove(location) }
+        if (UserHasPermission("removeLocation")) {
+            actions["remove"] = () => { OnRemove(location) }
+        }
     }
 
     for (let key in OnCustom) {
@@ -104,6 +110,7 @@ export const MapMarker= ({
     }
 
     const handleLoad = () => {
+        // On load, needs to fetch all filenames and then all file details
         if (!checked && location.id && location.id != -1) {
             jsapi.GetLocationFiles(location.id).then(function(json: any) {
                 json.filenames.forEach((filename: string) => {
@@ -145,7 +152,7 @@ export const MapMarker= ({
         <Marker position={[location.mapLat, location.mapLon]} icon={icon} >
             <Popup maxWidth={700} >
                 <MapPopupOnOpen OnOpen={handleLoad} />
-                {(location.address) ? `${location.address.city}, ${location.address.country}` : null}
+                {(location.address) ? `${location.address.city}, ${location.address.country}` : location.label }
 
                 <MapMarkerActions actions={actions}/> 
 
@@ -159,22 +166,22 @@ export const MapMarker= ({
                     </div>);
                 }) : null}
                 {(fileSelected !== null) ? 
-                        <>
-                            <div>
+                        <div className="MapMarkerSingleFile">
+                            <div className="MapMarkerSingleFileTitle">
                                 {fileSelected.title}
-                                <div style={ {textAlign:"right"} }>
+                                <div className="MapMarkerSingleFileButton">
                                     <button onClick={() => {setFileSelected(null);}}>X</button>
                                 </div>
                             </div>
                             <hr/>
-                            <div style={ {textAlign:"center"} }>
+                            <div className="MapMarkerSingleImageWrapper">
                                 <a href={`/img/tmp/${fileSelected.filename}`} target="_blank">
                                     <img width="100%" src={`/img/tmp/${fileSelected.filename}`}  />
                                 </a>
                             
                                 <div>{fileSelected.description}</div>
                             </div>
-                        </>
+                        </div>
                     : null
                 }
                 </div>

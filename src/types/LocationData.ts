@@ -6,7 +6,7 @@ export interface LocationData {
     type: string;
     mapLat: number;
     mapLon: number;
-    address: {
+    address?: {
         city?: string;
         county?: string;
         state?: string;
