@@ -33,7 +33,7 @@ export const DialogBox = ({
         }
     };
 
-    if (OnClose == undefined) {
+    if (OnClose === undefined) {
         OnClose = () => { setIsDone(true); }
     }
 

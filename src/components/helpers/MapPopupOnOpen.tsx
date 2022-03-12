@@ -1,11 +1,11 @@
 
-type MapPopupOnOpen = {
+type MapPopupOnOpenProps = {
     OnOpen: () => void;
 };
 
 export const MapPopupOnOpen = ({
     OnOpen,
-}: MapPopupOnOpen) => {
+}: MapPopupOnOpenProps) => {
 
     OnOpen();
 

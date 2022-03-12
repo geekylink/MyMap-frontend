@@ -1,10 +1,10 @@
 import {useState, ReactNode} from 'react';
 import { MapContainer, TileLayer, ZoomControl} from 'react-leaflet';
 
-import {LocationSearch, MapMarkers, MapMarker, MapIcon, MapMenuBar, DialogBox, DialogFullScreen, FileUpload} from "../ui/";
-import {MapEvents, UseJSAPI} from "./../../utils/";
+import {MapMarkers, MapMarker, MapIcon, MapMenuBar, DialogBox, FileUpload} from "../ui/";
+import {/*MapEvents,*/ UseJSAPI} from "./../../utils/";
 
-import {LocationData, MapProps, FileInfo} from "../../types";
+import {LocationData/*, MapProps*/} from "../../types";
 
 type MapManagerProps = {
     children?: ReactNode;
@@ -19,7 +19,6 @@ export const MapManager = ({
     const [checkedLocations, setCheckedLocations] = useState(false);
 
     const [fileLocationId, setFileLocationId] = useState(-1);
-    const [refreshNum, setRefreshNum] = useState(0);
 
     const jsapi = UseJSAPI();
 
@@ -73,12 +72,12 @@ export const MapManager = ({
     };
 
     const handleAddFile = (location: LocationData) => {
-        if (location.id && location.id != -1) setFileLocationId(location.id);
+        if (location.id && location.id !== -1) setFileLocationId(location.id);
     }
     return (
         <>
         <MapMenuBar OnSearchResult={handleSearchResult}/>
-        {(fileLocationId != -1) ? 
+        {(fileLocationId !== -1) ? 
             <DialogBox title="File Upload" OnClose={() => { setFileLocationId(-1); }}>
                 <FileUpload url={`/upload/photo/${fileLocationId}/`} OnFinish={(success: boolean) => { 
                             if (success) setFileLocationId(-1); 

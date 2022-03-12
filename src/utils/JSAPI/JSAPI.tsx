@@ -1,8 +1,9 @@
-import {LocationData} from "../../types/";
+import {LocationData, CommentData} from "../../types/";
 
 //const HTTP_SERVER = "http://localhost:8080";
 const HTTP_SERVER = "";
 
+/*** API Helpers ***/
 const JSONAPICall = (url: string, body: string) => {
     // POSTs JSON and returns a promise that fetches the JSON response
 
@@ -45,7 +46,8 @@ const GETAPICall = (url: string, doParse: boolean) => {
 
             response.text().then(resp => {
                 if (doParse) {
-                    resolve(JSON.parse(resp));
+                    let jsonResp = JSON.parse(resp);
+                    resolve(jsonResp);
                 } else {
                     resolve(resp);
                 }
@@ -54,9 +56,30 @@ const GETAPICall = (url: string, doParse: boolean) => {
     });
 }
 
-const Login = (username: string, password: string) => {
+/*** End of API Helpers ***/
+
+/*** API Calls ***/
+const Login = (username: string, password: string, totp: string) => {
     // JSON Login
+    if (totp !== "") { // Only send TOTP if used
+        return JSONAPICall("/user/login/", 
+                JSON.stringify({ 
+                    username: username,
+                    password: password,
+                    totp_code: totp,
+                }));
+    }
+
     return JSONAPICall("/user/login/", 
+                JSON.stringify({ 
+                    username: username,
+                    password: password,
+                }));
+}
+
+const Register = (username: string, password: string) => {
+    // JSON Login
+    return JSONAPICall("/user/register/", 
                         JSON.stringify({ 
                             username: username,
                             password: password,
@@ -69,6 +92,18 @@ const Logout = () => {
 
 const CheckLogin = () => {
     return GETAPICall("/user/", true);
+}
+
+const CheckTOTP = (totp: string) => {
+    return JSONAPICall("/user/totp/", 
+                        JSON.stringify({ 
+                            totp_code: totp,
+                        }));
+}
+
+const IsUser = (username: string) => {
+    // Fetch filenames (photos) for a location
+    return GETAPICall("/user/isUser/" + username + "/", true);
 }
 
 const GetFileInfo = (filename: string) => {
@@ -103,18 +138,72 @@ const SaveLocation = (location: LocationData) => {
                         }));
 }
 
+const AddCommentOnFile = (comment: CommentData, fileId: number) => {
+    return JSONAPICall("/api/addComment/", 
+                        JSON.stringify({ 
+                            comment: comment.msg,
+                            file_id: fileId,
+                            reply_to_id: comment.replyToId,
+                        }));
+}
+
+const AddCommentOnLocation = (comment: CommentData, locationId: number) => {
+    return JSONAPICall("/api/addComment/", 
+                        JSON.stringify({ 
+                            comment: comment.msg,
+                            location_id: locationId,
+                            reply_to_id: comment.replyToId,
+                        }));
+}
+
+const EditComment = (comment: CommentData, comment_id: number) => {
+    return JSONAPICall("/api/addComment/", 
+                        JSON.stringify({ 
+                            comment: comment.msg,
+                            id: comment_id,
+                        }));
+}
+
+const GetCommentsOnLocation = (locationId: number) => {
+    // Fetch comments for a location
+    return GETAPICall("/api/getCommentsOnLocation/" + locationId + "/", true);
+}
+
+const GetCommentsOnFile = (fileId: number) => {
+    // Fetch comments for a location
+    return GETAPICall("/api/getCommentsOnFile/" + fileId + "/", true);
+}
+
+// Fetch all replies
+const GetReplies = (replyId: number) => {
+    return GETAPICall("/api/getReplies/" + replyId + "/", true);
+}
+
+/*** End of API Calls ***/
+
 export const UseJSAPI = () => {
     // Returns API Calls available
     return {
-        "GetAllLocations":  GetAllLocations,
-        "GetFileInfo":      GetFileInfo,
-        "GetLocationFiles": GetLocationFiles,
-        "SaveLocation":     SaveLocation,
+        // Comments
+        "AddCommentOnFile":         AddCommentOnFile,
+        "AddCommentOnLocation":     AddCommentOnLocation,
+        "EditComment":              EditComment,
+        "GetCommentsOnFile":        GetCommentsOnFile,
+        "GetCommentsOnLocation":    GetCommentsOnLocation,
+        "GetReplies":               GetReplies,
+
+        "GetAllLocations":          GetAllLocations,
+        "GetFileInfo":              GetFileInfo,
+        "GetLocationFiles":         GetLocationFiles,
+        "SaveLocation":             SaveLocation,
 
         // User functions
+        "CheckLogin":       CheckLogin,
+        "CheckTOTP":        CheckTOTP,
+        "IsUser":           IsUser,
         "Login":            Login,
         "Logout":           Logout,
-        "CheckLogin":       CheckLogin,
+        "Register":         Register,
     }
 }
 

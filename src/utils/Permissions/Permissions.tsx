@@ -10,7 +10,7 @@ export const UserHasPermission = (permission: string) => {
 
     if (user && user.permissions) {
         let permissions = user.permissions;
-        if (permissions == "*") {
+        if (permissions === "*") {
             return true;
         }
         if (permissions.includes(permission)) {

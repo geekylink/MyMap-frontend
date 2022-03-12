@@ -1,4 +1,3 @@
-import {useState} from "react";
 import {LocationSearch, LoginButton} from "../";
 import {LocationData} from "../../../types";
 

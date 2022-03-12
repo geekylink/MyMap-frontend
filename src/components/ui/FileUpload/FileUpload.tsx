@@ -56,7 +56,7 @@ export const FileUpload = ({
         )
         .then(res => {
             console.log(res.data);
-            if (res.data.status == "OK") {
+            if (res.data.status === "OK") {
                 console.log("Successful upload.");
                 if (OnFinish) OnFinish(true);
             }
@@ -75,7 +75,7 @@ export const FileUpload = ({
 
     return(<>
         <div>{ title }</div>
-        {(imgPreview != "") ? <img src={imgPreview} alt="image preview" height="200px" width="200px" /> : <label>Upload a file</label>}
+        {(imgPreview !== "") ? <img src={imgPreview} alt="preview" height="200px" width="200px" /> : <label>Upload a file</label>}
 
         <div>{description}</div>
         <hr/>
@@ -84,7 +84,7 @@ export const FileUpload = ({
                 onChange={handleImagePreview} 
         /><br />
         
-        {(imgPreview != "") ? (<>
+        {(imgPreview !== "") ? (<>
             <label>Title:</label>
             <input type="text" onChange={handleTitleChange} /><br/>
             <label>Description:</label>

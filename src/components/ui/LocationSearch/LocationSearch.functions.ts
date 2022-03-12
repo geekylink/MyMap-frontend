@@ -56,10 +56,10 @@ export async function lookupLocation (location: string): Promise<LocationData[]>
 
                 let country = (loc.address.country) ? loc.address.country : "";
 
-                if (country == "") {
+                if (country === "") {
                     console.log("Bad Country in loc: ", loc)
                 }
-                else if (city == "") {
+                else if (city === "") {
                     console.log("Bad City in loc: ", loc)
                 }
                 else {

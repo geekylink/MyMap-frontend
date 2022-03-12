@@ -1,0 +1,15 @@
+.Comments {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.Comment {
+}
+
+.Comment .Replies {
+    margin-left: 40px;
+}
+
+.Comment textarea {
+    width:100%;
+}

@@ -2,7 +2,7 @@ import {ReactNode, useState} from 'react';
 import {Marker, Popup, useMap} from 'react-leaflet';
 import {Icon} from 'leaflet';
 
-import {MapIcon} from "../";
+import {MapIcon, Comments} from "../";
 import {MapPopupOnOpen} from "../../helpers/";
 import {LocationData, FileInfo} from "../../../types";
 import {UseJSAPI, UserHasPermission} from "../../../utils/";
@@ -87,10 +87,10 @@ export const MapMarker= ({
     if (OnCenter) {
         actions["center"] = ((OnCenter === true) ?
                                 () => {
-                                    let popup: any;
+                                    /*let popup: any;
                                     map.eachLayer((layer) => {
                                         if (layer.isPopupOpen()) popup = layer.getPopup();
-                                    });
+                                    });*/
                                     
                                     map.closePopup();
                                     map.flyTo([location.mapLat, location.mapLon], map.getZoom()); 
@@ -111,7 +111,7 @@ export const MapMarker= ({
 
     const handleLoad = () => {
         // On load, needs to fetch all filenames and then all file details
-        if (!checked && location.id && location.id != -1) {
+        if (!checked && location.id && location.id !== -1) {
             jsapi.GetLocationFiles(location.id).then(function(json: any) {
                 json.filenames.forEach((filename: string) => {
                     console.log("Checking: " + filename);
@@ -121,8 +121,10 @@ export const MapMarker= ({
                             console.log("Found file");
                             console.log(fileInfo);
                             let newFiles = files;
+                            console.log(fileInfo);
 
                             newFiles.push({
+                                id: fileInfo.file_id,
                                 filename: filename,
                                 title: fileInfo.title,
                                 description: fileInfo.description,
@@ -140,10 +142,6 @@ export const MapMarker= ({
         }
     }
 
-    const handleClickPhoto = () => {
-            alert("aklert");
-    }
-    
     const handleFileSelect = (file: FileInfo) => {
         setFileSelected(file);
     }
@@ -159,10 +157,10 @@ export const MapMarker= ({
                 <div>
                 {(fileSelected === null && files) ? files.map((file,key) => {
                     let className = "MapMarkerFile";
-                    if (key == files.length-1) className = "MapMarkerLastFile";
+                    if (key === files.length-1) className = "MapMarkerLastFile";
                     return (<div className={className} onClick={() => {handleFileSelect(file); } }>
                         <div>{file.title}</div>
-                        <img width="100%" src={`/img/tmp/${file.filename}`}  />
+                        <img alt={file.title} width="100%" src={`/img/tmp/${file.filename}`}  />
                     </div>);
                 }) : null}
                 {(fileSelected !== null) ? 
@@ -175,16 +173,21 @@ export const MapMarker= ({
                             </div>
                             <hr/>
                             <div className="MapMarkerSingleImageWrapper">
-                                <a href={`/img/tmp/${fileSelected.filename}`} target="_blank">
-                                    <img width="100%" src={`/img/tmp/${fileSelected.filename}`}  />
+                                <a href={`/img/tmp/${fileSelected.filename}`} target="_blank" rel="noreferrer">
+                                    <img alt={fileSelected.title} width="100%" src={`/img/tmp/${fileSelected.filename}`}  />
                                 </a>
                             
                                 <div>{fileSelected.description}</div>
                             </div>
+                            <Comments fileId={fileSelected.id} />
                         </div>
                     : null
                 }
                 </div>
+                {(fileSelected === null && location.id !== -1) ?
+                        <Comments locationId={location.id} />
+                    : null
+                }
 
                 {children}
             </Popup>

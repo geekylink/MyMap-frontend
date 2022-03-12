@@ -1,7 +1,6 @@
 import {useState} from "react";
-import axios from "axios";
 import {UseJSAPI} from "../../../utils/";
-import {DialogBox, LoginForm} from "../";
+import {LoginForm} from "../";
 import {UserInfo} from "../../../types";
 
 type LoginButtonProps = {
@@ -20,9 +19,10 @@ export const LoginButton = ({
     //const [username, setUsername] = useState("");
     const [user, setUser] = useState<UserInfo|null>(null);
     const [checked, setChecked] = useState(false);
+    const [mode, setMode] = useState("LoginButton");
     const [popup, setPopup] = useState(false);
 
-    let text = ((user === null) ? "Login" : `Logout (${user.username})`);
+    let text = ((user === null) ? "Login (Or register)" : `Logout (${user.username})`);
 
     // Fetch username to check if logged in
     if (!checked) {
@@ -39,9 +39,12 @@ export const LoginButton = ({
                     localStorage.setItem("user", JSON.stringify(user));
 
                     setUser(user);
+                    setMode("LogoutButton")
                 }
                 else {
                     setUser(null);
+                    setMode("LoginButton")
+                    localStorage.setItem("user", JSON.stringify("[]"));
                 }
                 setChecked(true);
             },
@@ -51,7 +54,11 @@ export const LoginButton = ({
     }
 
     const handleClick = () => {
-        if (text == "Login") {
+        if (mode === "LoginButton") {
+            setMode("Login");
+            
+        }
+        else if (mode === "Login") {
             setPopup(true);
         }
         else {
@@ -73,15 +80,10 @@ export const LoginButton = ({
     }
 
     return(<>
-        <button onClick={handleClick}>
-        {text}
-        </button>
-        {(popup) ? 
-            <DialogBox title="Login">
-                <LoginForm OnFinish={handleLogin} />
-            </DialogBox>
-            : null
+        {(mode === "LoginButton" || mode == "LogoutButton") ?
+            <button onClick={handleClick}>{text}</button>
+        : 
+            <LoginForm OnFinish={handleLogin} />
         }
-
     </>);
 }
